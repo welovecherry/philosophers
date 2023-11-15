@@ -121,27 +121,27 @@ int main(int ac, char **av)
 	pthread_mutex_init(&fork1, NULL);
 
 	philo_info[0].philo_idx = 1;
-	if (pthread_create(&thread1, NULL, print_philo_state, &philo_info[0]) != 0)
-		printf("failed to create the thread\n");
-	else
+	if (pthread_create(&thread1, NULL, print_philo_state, &philo_info[0]) == 0)
 		printf("thread 1 created\n");
+	else
+		printf("failed to create the thread\n");
 
 	philo_info[1].philo_idx = 2;
-	if (pthread_create(&thread2, NULL, print_philo_state, &philo_info[1]) != 0)
-		printf("failed to create the thread\n");
-	else
+	if (pthread_create(&thread2, NULL, print_philo_state, &philo_info[1]) == 0)
 		printf("thread 2 created\n");
-
-
-	if (pthread_join(thread1, NULL) != 0)
-		printf("failed to join the thread1 \n");
 	else
+		printf("failed to create the thread\n");
+
+
+	if (pthread_join(thread1, NULL) == 0)
 		printf("thread1 finished execution\n");
-
-	if (pthread_join(thread2, NULL) != 0)
-		printf("failed to join the thread 2 \n");
 	else
+		printf("failed to join the thread1 \n");
+
+	if (pthread_join(thread2, NULL) == 0)
 		printf("thread 2 finished execution\n");
+	else
+		printf("failed to join the thread 2 \n");
 		
 	pthread_mutex_destroy(&fork1);
 

@@ -1,45 +1,154 @@
 #include <stdio.h>
+#include <sys/time.h>
+#include <unistd.h>
 #include <pthread.h>
+#include <stdlib.h>
+
+pthread_mutex_t	fork1;
+pthread_mutex_t	fork2;
 
 int	counter = 0;
 
-pthread_mutex_t	lock;
-
-void	*increment_counter(void *arg)
+// TODO: 철학자 수는 1 이상이기 때문에 -, 음수 될  수 없다.
+int ft_atoi(const char *str)
 {
-	pthread_mutex_lock(&lock);
-
-	int	i = 0;
-	while (i < 10000)
+	int res;
+	int sign;
+	res = 0;
+	sign = 1;
+	while (*str && (*str == ' ' || *str == '\n' || *str == '\t' || *str == '\v' || *str == '\f' || *str == '\r'))
+		str++;
+	if (*str == '-' || *str == '+')
 	{
-		counter++;
-		printf("counter:%d\n", counter);
-		i++;
+		if (*str == '-')
+			sign *= -1;
+		str++;
 	}
-
-	pthread_mutex_unlock(&lock);
-	return(NULL);
+	while (*str)
+	{
+		res = (res * 10) + *str - '0';
+		str++;
+	}
+	return (res * sign);
 }
 
-int	main(void)
+long get_time_in_ms()
+{
+	struct timeval tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+// TODO: 	int		num_of_times_each_philo_must_eat;
+typedef struct	s_philo
+{
+	int		num_of_philo;
+	long	time_to_die;
+	long	time_to_eat;
+	long	time_to_sleep;
+	int		philo_idx;
+	long	beginning_of_simulation;
+	//pthread_mutex_t	*left_fork;
+	//pthread_mutex_t	*right_fork;
+}	t_philo;
+
+void	*print_philo_state(void *philo_info)
+{
+	long	beginning_of_last_meal;
+	long	beginning_of_sleeping;
+	long	current_time;
+	int		is_dead;
+	t_philo	*d;
+
+	d = (t_philo *)philo_info;
+	is_dead = 0;
+	d->beginning_of_simulation = get_time_in_ms();
+	while (1)
+	{
+		pthread_mutex_lock(&fork1);
+		pthread_mutex_lock(&fork2);
+		current_time = get_time_in_ms();
+		printf("%ld %d has taken a fork\n", current_time - d->beginning_of_simulation, d->philo_idx);
+
+		current_time = get_time_in_ms();
+		printf("%ld %d has taken a fork\n", current_time - d->beginning_of_simulation, d->philo_idx);
+
+		beginning_of_last_meal = get_time_in_ms();
+		printf("%ld %d is eating\n", beginning_of_last_meal - d->beginning_of_simulation, d->philo_idx);
+		usleep(1000 * (d->time_to_eat));
+
+		pthread_mutex_unlock(&fork1);
+		pthread_mutex_unlock(&fork2);
+
+		beginning_of_sleeping = get_time_in_ms();
+		printf("%ld %d is sleeping\n", beginning_of_sleeping - d->beginning_of_simulation, d->philo_idx);
+		while (1)
+		{
+			current_time = get_time_in_ms();
+			if (current_time - beginning_of_last_meal >= d->time_to_die)
+			{
+				current_time = get_time_in_ms();
+				printf("%ld %d died\n", current_time - d->beginning_of_simulation, d->philo_idx);
+		// TODO: 한 철학자가 죽으면 시뮬레이션 종료되게 하기.
+
+				is_dead = 1;
+				break;
+			}
+			current_time = get_time_in_ms();
+			if (current_time - beginning_of_sleeping >= (d->time_to_sleep))
+			{
+				current_time = get_time_in_ms();
+				printf("%ld %d is thinking\n", current_time - d->beginning_of_simulation, d->philo_idx);
+				break ;
+			}
+			usleep(10);
+		}
+		if (is_dead)
+			break ;
+	}
+	return (NULL);
+}
+
+int main(int ac, char **av)
 {
 	pthread_t	thread1;
 	pthread_t	thread2;
-	pthread_t	thread3;
-	pthread_t	thread4;
+	t_philo		philo_info[2];
 
-	pthread_mutex_init(&lock, NULL);
+	philo_info[0].num_of_philo = ft_atoi(av[1]);
+	philo_info[0].time_to_die = (long)ft_atoi(av[2]);
+	philo_info[0].time_to_eat = (long)ft_atoi(av[3]);
+	philo_info[0].time_to_sleep = (long)ft_atoi(av[4]);
 
-	pthread_create(&thread1, NULL, increment_counter, NULL);
-	pthread_create(&thread2, NULL, increment_counter, NULL);
-	pthread_create(&thread3, NULL, increment_counter, NULL);
-	pthread_create(&thread4, NULL, increment_counter, NULL);
+	philo_info[1].num_of_philo = ft_atoi(av[1]);
+	philo_info[1].time_to_die = (long)ft_atoi(av[2]);
+	philo_info[1].time_to_eat = (long)ft_atoi(av[3]);
+	philo_info[1].time_to_sleep = (long)ft_atoi(av[4]);
 
+	pthread_mutex_init(&fork1, NULL);
+	pthread_mutex_init(&fork2, NULL);
+
+	philo_info[0].philo_idx = 1;
+	if (pthread_create(&thread1, NULL, print_philo_state, &philo_info[0]) == 0)
+		printf("thread 1 created\n");
+	else
+		printf("failed to create the thread\n");
+
+	philo_info[1].philo_idx = 2;
+	if (pthread_create(&thread2, NULL, print_philo_state, &philo_info[1]) == 0)
+		printf("thread 2 created\n");
+	else
+		printf("failed to create the thread\n");
+
+	// join
 	pthread_join(thread1, NULL);
 	pthread_join(thread2, NULL);
-	pthread_join(thread3, NULL);
-	pthread_join(thread4, NULL);
 
-	pthread_mutex_destroy(&lock);	
+	pthread_mutex_destroy(&fork1);
+	pthread_mutex_destroy(&fork2);
+
+	pthread_detach
+
 	return (0);
 }
