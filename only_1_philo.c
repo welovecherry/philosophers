@@ -2,7 +2,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <pthread.h>
-
+#include <stdlib.h>
 
 pthread_mutex_t	fork1;
 
@@ -49,77 +49,90 @@ typedef struct	s_philo
 	int		philo_idx;
 	long	beginning_of_simulation;
 	int		*flag_anyone_dead;
+	int		has_left_fork;
+	int		has_right_fork;
 }	t_philo;
 
-void	*monitor_death(void *philo_info)
+int	is_this_philo_starve_to_die(long begin_of_last_meal, t_philo *d)
 {
-	t_philo	*d;
+	long	current_time;
 
-	d = (t_philo *)philo_info;
-	//printf("checkkkkk:%d\n", *(philo->flag_anyone_dead));
-	
-	while (1)
+	if (*(d->flag_anyone_dead))
+		return (1);
+	current_time = get_time_in_ms();
+	if (current_time - begin_of_last_meal >= d->time_to_die)
 	{
-		if (*(d->flag_anyone_dead) == 1)
-		{
-			printf("someone dieddddd\n\n");
-			return (NULL);
-		}
+		*(d->flag_anyone_dead) = 1;
+		current_time = get_time_in_ms();
+		printf("%ld %d died\n", current_time - d->beginning_of_simulation, d->philo_idx);
+		return (1);
 	}
-	return (NULL);
+	return (0);
 }
-
 
 void	*print_philo_state(void *philo_info)
 {
 	long	beginning_of_last_meal;
 	long	beginning_of_sleeping;
 	long	current_time;
-	int		is_dead;
 	t_philo	*d;
 
 	d = (t_philo *)philo_info;
-	is_dead = 0;
 	d->beginning_of_simulation = get_time_in_ms();
+	beginning_of_last_meal = d->beginning_of_simulation;
 	while (1)
 	{
-		pthread_mutex_lock(&fork1);
-		current_time = get_time_in_ms();
-		printf("%ld %d has taken a fork\n", current_time - d->beginning_of_simulation, d->philo_idx);
-		current_time = get_time_in_ms();
-		printf("%ld %d has taken a fork\n", current_time - d->beginning_of_simulation, d->philo_idx);
-
-		beginning_of_last_meal = get_time_in_ms();
-		printf("%ld %d is eating\n", beginning_of_last_meal - d->beginning_of_simulation, d->philo_idx);
-
-		
-		pthread_mutex_unlock(&fork1);
-		usleep(1000 * (d->time_to_eat));
-
+		if(is_this_philo_starve_to_die(beginning_of_last_meal, d))
+			return (NULL);
+		if (d->has_left_fork == 0)
+		{
+			current_time = get_time_in_ms();
+			if (*(d->flag_anyone_dead))
+				return (NULL);
+			if(is_this_philo_starve_to_die(beginning_of_last_meal, d))
+				return (NULL);
+			printf("%ld %d has taken aaa fork\n", current_time - d->beginning_of_simulation, d->philo_idx);
+			d->has_left_fork = 1;
+		}
+		if (d->has_right_fork == 0 && d->num_of_philo > 1)
+		{
+			current_time = get_time_in_ms();
+			if (d->flag_anyone_dead)
+				return (NULL);
+			if(is_this_philo_starve_to_die(beginning_of_last_meal, d))
+				return (NULL);
+			printf("%ld %d has taken a fork\n", current_time - d->beginning_of_simulation, d->philo_idx);
+			d->has_right_fork = 1;
+		}
+		if (d->has_left_fork && d->has_right_fork)
+		{
+			beginning_of_last_meal = get_time_in_ms();
+			if (d->flag_anyone_dead)
+				return (NULL);
+			if(is_this_philo_starve_to_die(beginning_of_last_meal, d))
+				return (NULL);
+			printf("%ld %d is eating\n", beginning_of_last_meal - d->beginning_of_simulation, d->philo_idx);
+			usleep(1000 * (d->time_to_eat));
+		}
+		else
+			continue;
 		beginning_of_sleeping = get_time_in_ms();
+		if(is_this_philo_starve_to_die(beginning_of_last_meal, d))
+			return (NULL);
 		printf("%ld %d is sleeping\n", beginning_of_sleeping - d->beginning_of_simulation, d->philo_idx);
 		while (1)
 		{
 			current_time = get_time_in_ms();
-			if (current_time - beginning_of_last_meal >= d->time_to_die)
-			{
-				*(d->flag_anyone_dead) = 1;
-				current_time = get_time_in_ms();
-				printf("%ld %d died\n", current_time - d->beginning_of_simulation, d->philo_idx);
-				is_dead = 1;
-				return (NULL);
-			}
-			current_time = get_time_in_ms();
 			if (current_time - beginning_of_sleeping >= (d->time_to_sleep))
 			{
 				current_time = get_time_in_ms();
+				if(is_this_philo_starve_to_die(beginning_of_last_meal, d))
+					return (NULL);
 				printf("%ld %d is thinking\n", current_time - d->beginning_of_simulation, d->philo_idx);
 				break ;
 			}
 			usleep(10);
 		}
-		if (is_dead)
-			break ;
 	}
 	return (NULL);
 }
@@ -132,46 +145,22 @@ int main(int ac, char **av)
 	t_philo		philo_info[2];
 	int			is_anyone_dead;
 	
-
 	is_anyone_dead = 0;
 	philo_info[0].num_of_philo = ft_atoi(av[1]);
 	philo_info[0].time_to_die = (long)ft_atoi(av[2]);
 	philo_info[0].time_to_eat = (long)ft_atoi(av[3]);
 	philo_info[0].time_to_sleep = (long)ft_atoi(av[4]);
 	philo_info[0].flag_anyone_dead = &is_anyone_dead;
-
-	//philo_info[1].num_of_philo = ft_atoi(av[1]);
-	//philo_info[1].time_to_die = (long)ft_atoi(av[2]);
-	//philo_info[1].time_to_eat = (long)ft_atoi(av[3]);
-	//philo_info[1].time_to_sleep = (long)ft_atoi(av[4]);
+	philo_info[0].has_left_fork = 0;
+	philo_info[0].has_right_fork = 0;
 
 	pthread_mutex_init(&fork1, NULL);
 
 	philo_info[0].philo_idx = 1;
-	if (pthread_create(&thread1, NULL, print_philo_state, &philo_info[0]) == 0)
-		printf("thread 1 created\n");
-	else
-		printf("failed to create the thread\n");
+	pthread_create(&thread1, NULL, print_philo_state, &philo_info[0]);
 
-	pthread_create(&th_death_monitor, NULL, monitor_death, &philo_info[0]);
+	pthread_join(thread1, NULL);
 
-	//philo_info[1].philo_idx = 2;
-	//if (pthread_create(&thread2, NULL, print_philo_state, &philo_info[1]) == 0)
-	//	printf("thread 2 created\n");
-	//else
-	//	printf("failed to create the thread\n");
-
-
-	if (pthread_join(thread1, NULL) == 0)
-		printf("thread1 finished execution\n");
-	else
-		printf("failed to join the thread1 \n");
-
-	//if (pthread_join(thread2, NULL) == 0)
-	//	printf("thread 2 finished execution\n");
-	//else
-	//	printf("failed to join the thread 2 \n");
-		
 	pthread_mutex_destroy(&fork1);
 
 	return (0);
