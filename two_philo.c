@@ -114,6 +114,7 @@ void	*print_even_philo_state(void *philo_info)
 			pthread_mutex_lock(d->left_fork_lock);
 			if (*(d->left_fork))
 			{
+				pthread_mutex_unlock(d->left_fork_lock);
 				continue;
 			}
 			else
@@ -135,6 +136,7 @@ void	*print_even_philo_state(void *philo_info)
 			pthread_mutex_lock(d->right_fork_lock);
 			if (*(d->right_fork))
 			{
+				pthread_mutex_unlock(d->right_fork_lock);
 				continue;
 			}
 			else
