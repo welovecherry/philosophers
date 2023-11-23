@@ -5,18 +5,18 @@
 #include <stdlib.h>
 
 #define NUM_OF_PHILO 1
-#define TIME_DIE 1600
+#define TIME_DIE 5000
 #define TIME_EAT 1000
-#define TIME_SLEEP 1500
+#define TIME_SLEEP 6000
 
 typedef struct s_info
 {
-	int num_of_philo;
-	long t_die;
-	long t_eat;
-	long t_sleep;
-	long t_begin_simul_from_70s;
-} t_info;
+	int		num_of_philo;
+	long	t_die;
+	long	t_eat;
+	long	t_sleep;
+	long	t_begin_simul_from_70s;
+}	t_info;
 
 typedef struct s_philo
 {
@@ -24,7 +24,7 @@ typedef struct s_philo
 	long	t_begin_last_meal;
 	int		is_dead;
 	t_info	*i;
-} t_philo;
+}	t_philo;
 
 #define FORK 0
 #define EAT 1

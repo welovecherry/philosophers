@@ -1,8 +1,8 @@
 #include "main.h"
 
-int is_alive(t_philo *p)
+int	is_alive(t_philo *p)
 {
-	if (get_time(p) - p->t_begin_last_meal >= p->i->t_die)
+	if (get_time(p) - (p->t_begin_last_meal) >= (p->i->t_die))
 	{
 		print(p, DIED);
 		p->is_dead = 1;
@@ -11,12 +11,11 @@ int is_alive(t_philo *p)
 	return (1);
 }
 
-void *philo(void *ptr)
+void	*philo(void *ptr)
 {
 	t_philo *p;
 
 	p = (t_philo *)ptr;
-
 	while (1)
 	{
 		if (take_two_forks(p))

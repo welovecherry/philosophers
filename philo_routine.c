@@ -5,6 +5,7 @@ int take_two_forks(t_philo *p)
 	if (!is_alive(p))
 		return (p->is_dead);
 	print(p, FORK);
+
 	if (!is_alive(p))
 		return (p->is_dead);
 	print(p, FORK);
@@ -19,7 +20,7 @@ int eating(t_philo *p)
 	p->t_begin_last_meal = get_time(p);
 	while (is_alive(p))
 	{
-		if (get_time(p) - p->t_begin_last_meal >= p->i->t_eat)
+		if (get_time(p) - (p->t_begin_last_meal) >= (p->i->t_eat))
 			break;
 		usleep(100);
 	}

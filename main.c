@@ -1,12 +1,16 @@
 #include "main.h"
 
-void free_all(t_philo **ps)
+void	free_all(t_philo **ps)
 {
-	int idx;
+	int	idx;
+	int	temp_num_of_philo;
 
+	if (!ps)
+		return ;
+	temp_num_of_philo = ps[0]->i->num_of_philo;
 	free(ps[0]->i);
 	idx = 0;
-	while (idx < ps[0]->i->num_of_philo)
+	while (idx < temp_num_of_philo)
 	{
 		free(ps[idx]);
 		idx++;
@@ -16,29 +20,30 @@ void free_all(t_philo **ps)
 
 t_philo **init_philo(void)
 {
-	t_info *i;
-	t_philo **ps;
+	t_info	*info;
+	t_philo	**ps;
 	int		idx;
 
-	i = (t_info *)malloc(sizeof(t_info) * 1);
-	if (!i)
+	info = (t_info *)malloc(sizeof(t_info) * 1);
+	if (!info)
 		exit(1);
-	i->num_of_philo = NUM_OF_PHILO;
-	i->t_die = TIME_DIE;
-	i->t_eat = TIME_EAT;
-	i->t_sleep = TIME_SLEEP;
+	// TODO: change macro to argv
+	info->num_of_philo = NUM_OF_PHILO;
+	info->t_die = TIME_DIE;
+	info->t_eat = TIME_EAT;
+	info->t_sleep = TIME_SLEEP;
 
-	ps = (t_philo **)malloc(sizeof(t_philo *) * i->num_of_philo);
+	ps = (t_philo **)malloc(sizeof(t_philo *) * (info->num_of_philo));
 	if (!ps)
 		exit(1);
 	idx = 0;
-	while (idx < i->num_of_philo)
+	while (idx < info->num_of_philo)
 	{
 		ps[idx] = (t_philo *)malloc(sizeof(t_philo) * 1);
 		ps[idx]->philo_idx = idx;
 		ps[idx]->t_begin_last_meal = 0;
 		ps[idx]->is_dead = 0;
-		ps[idx]->i = i;
+		ps[idx]->i = info;
 		idx++;
 	}
 	return (ps);
@@ -46,9 +51,10 @@ t_philo **init_philo(void)
 
 int main(void)
 {
-	t_philo **philos;
-	pthread_t *philo_ths;
-	int idx;
+	t_philo			**philos;
+	pthread_t		*philo_ths;
+	int			idx;
+
 
 	philos = init_philo();
 	philo_ths = (pthread_t *)malloc(sizeof(pthread_t) * philos[0]->i->num_of_philo);
