@@ -2,13 +2,10 @@
 
 int take_two_forks(t_philo *p)
 {
-	if (!is_alive(p))
+	if (take_left_fork(p, 'l'))
 		return (p->is_dead);
-	print(p, FORK);
-
-	if (!is_alive(p))
-		return (p->is_dead);
-	print(p, FORK);
+	if (take_right_fork(p, 'r'))
+		return (p->is_dead);	
 	return (p->is_dead);
 }
 
@@ -24,6 +21,7 @@ int eating(t_philo *p)
 			break;
 		usleep(100);
 	}
+	// TODO: put down forks
 	return (p->is_dead);
 }
 

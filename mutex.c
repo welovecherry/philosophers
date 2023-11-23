@@ -1,48 +1,26 @@
-#include <stdio.h>
-#include <pthread.h>
+#include "main.h"
 
-int	counter = 0;
-pthread_mutex_t	lock;
-
-
-void	*increment_counter(void *arg)
+void	init_mutex(t_philo **philos)
 {
-	//pthread_mutex_lock(&lock);
+	int	idx;
 
-	int	i;
-
-	i = 0;
-	while (i < 10000)
+	philos[0]->i->forks_lock = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * (philos[0]->i->num_of_philo));
+	idx = 0;
+	while (idx < philos[0]->i->num_of_philo)
 	{
-		counter++;
-		printf("counter i:%d\n", counter);
-		i++;
+		pthread_mutex_init(&(philos[0]->i->forks_lock[idx]), NULL);
+		idx++;
 	}
-	//pthread_mutex_unlock(&lock);
-	return (NULL);
 }
 
-int main()
+void	destroy_mutex(t_philo **philos)
 {
-	pthread_t	thread1;
-	pthread_t	thread2;
-	pthread_t	thread3;
-	pthread_t	thread4;
+	int	idx;
 
-
-	pthread_mutex_init(&lock, NULL);
-
-	pthread_create(&thread1, NULL, increment_counter, NULL);
-	pthread_create(&thread2, NULL, increment_counter, NULL);
-	pthread_create(&thread3, NULL, increment_counter, NULL);
-	pthread_create(&thread4, NULL, increment_counter, NULL);
-
-	pthread_join(thread1, NULL);
-	pthread_join(thread2, NULL);
-	pthread_join(thread3, NULL);
-	pthread_join(thread4, NULL);
-
-	pthread_mutex_destroy(&lock);
-
-	return (0);
+	idx = 0;
+	while(idx < philos[0]->i->num_of_philo)
+	{
+		pthread_mutex_destroy(&(philos[0]->i->forks_lock[idx]));
+		idx++;
+	}
 }
