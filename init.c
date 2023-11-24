@@ -30,7 +30,7 @@ t_philo **init_philo(void)
 	info->t_eat = TIME_EAT;
 	info->t_sleep = TIME_SLEEP;
 	init_forks(info);
-
+	info->is_anyone_dead = 0;
 	ps = (t_philo **)malloc(sizeof(t_philo *) * (info->num_of_philo));
 	if (!ps)
 		exit(1);

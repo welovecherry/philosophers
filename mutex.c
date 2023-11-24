@@ -11,6 +11,7 @@ void	init_mutex(t_philo **philos)
 		pthread_mutex_init(&(philos[0]->i->forks_lock[idx]), NULL);
 		idx++;
 	}
+	pthread_mutex_init(&(philos[0]->i->anyone_dead_lock), NULL);
 }
 
 void	destroy_mutex(t_philo **philos)
@@ -23,4 +24,5 @@ void	destroy_mutex(t_philo **philos)
 		pthread_mutex_destroy(&(philos[0]->i->forks_lock[idx]));
 		idx++;
 	}
+	pthread_mutex_destroy(&(philos[0]->i->anyone_dead_lock));
 }

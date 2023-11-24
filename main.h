@@ -4,10 +4,10 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-#define NUM_OF_PHILO 3
-#define TIME_DIE 5000
+#define NUM_OF_PHILO 4
+#define TIME_DIE 100
 #define TIME_EAT 1000
-#define TIME_SLEEP 6000
+#define TIME_SLEEP 5000
 
 typedef struct s_info
 {
@@ -17,7 +17,9 @@ typedef struct s_info
 	long			t_sleep;
 	long			t_begin_simul_from_70s;
 	pthread_mutex_t	*forks_lock;
+	pthread_mutex_t anyone_dead_lock;
 	int				*forks_occupied;
+	int				is_anyone_dead;
 }	t_info;
 
 typedef struct s_philo
@@ -27,6 +29,10 @@ typedef struct s_philo
 	int		is_dead;
 	int		hold_l_fork;
 	int		hold_r_fork;
+	int 	*is_l_fork_occupied;
+	int 	*is_r_fork_occupied;
+	pthread_mutex_t *l_fork_lock;
+	pthread_mutex_t *r_fork_lock;
 	t_info	*i;
 }	t_philo;
 
@@ -48,7 +54,7 @@ void *philo(void *ptr);
 void	init_mutex(t_philo **philos);
 void	destroy_mutex(t_philo **philos);
 void	thread_control(t_philo **philos);
-int	take_left_fork(t_philo *p, char l_or_r);
-int	take_right_fork(t_philo *p, char l_or_r);
+int	take_left_fork(t_philo *p);
+int	take_right_fork(t_philo *p);
 
 t_philo **init_philo(void);
