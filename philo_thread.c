@@ -3,7 +3,7 @@
 int	is_alive(t_philo *p)
 {
 	pthread_mutex_lock(&(p->i->anyone_dead_lock));
-	if (p->is_dead || p->i->is_anyone_dead)
+	if (p->am_i_dead || p->i->is_anyone_dead)
 	{
 		pthread_mutex_unlock(&(p->i->anyone_dead_lock));
 		return (0);
@@ -11,7 +11,7 @@ int	is_alive(t_philo *p)
 	pthread_mutex_unlock(&(p->i->anyone_dead_lock));
 	if (get_time(p) - (p->t_begin_last_meal) >= (p->i->t_die))
 	{
-		p->is_dead = 1;
+		p->am_i_dead = 1;
 		pthread_mutex_lock(&(p->i->anyone_dead_lock));
 		p->i->is_anyone_dead = 1;
 		pthread_mutex_unlock(&(p->i->anyone_dead_lock));
@@ -28,7 +28,7 @@ void	*philo(void *ptr)
 	p = (t_philo *)ptr;
 	while (1)
 	{
-		if (is_alive(p) == 0)
+		if (!(is_alive(p)))
 			break ;
 		if (take_two_forks(p))
 			return (NULL);
@@ -58,9 +58,17 @@ void	thread_control(t_philo **philos)
 	while (idx < philos[0]->i->num_of_philo)
 	{
 		pthread_create(&(philo_ths[idx]), NULL, philo, philos[idx]);
-		usleep(10);
-		idx++;
+		usleep(30);
+		idx += 2;
 	}
+	idx = 1;
+	while (idx < philos[0]->i->num_of_philo)
+	{
+		pthread_create(&(philo_ths[idx]), NULL, philo, philos[idx]);
+		usleep(30);
+		idx += 2;
+	}
+
 
 	idx = 0;
 	while (idx < philos[0]->i->num_of_philo)

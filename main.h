@@ -4,10 +4,10 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-#define NUM_OF_PHILO 4
-#define TIME_DIE 100
-#define TIME_EAT 1000
-#define TIME_SLEEP 5000
+#define NUM_OF_PHILO 5
+#define TIME_DIE 2000
+#define TIME_EAT 400
+#define TIME_SLEEP 3000
 
 typedef struct s_info
 {
@@ -24,16 +24,16 @@ typedef struct s_info
 
 typedef struct s_philo
 {
+	t_info	*i;
 	int 	philo_idx;
 	long	t_begin_last_meal;
-	int		is_dead;
+	int		am_i_dead;
 	int		hold_l_fork;
 	int		hold_r_fork;
 	int 	*is_l_fork_occupied;
 	int 	*is_r_fork_occupied;
 	pthread_mutex_t *l_fork_lock;
 	pthread_mutex_t *r_fork_lock;
-	t_info	*i;
 }	t_philo;
 
 #define FORK 0

@@ -16,13 +16,14 @@ int print(t_philo *p, int action)
 		action_str = "died";
 
 	pthread_mutex_lock(&(p->i->anyone_dead_lock));
-	if (p->is_dead == 0 && p->i->is_anyone_dead == 1)
+	if (p->am_i_dead == 0 && p->i->is_anyone_dead == 1)
 	{
 		pthread_mutex_unlock(&(p->i->anyone_dead_lock));
 		return (0);
 	}
 	pthread_mutex_unlock(&(p->i->anyone_dead_lock));
-	printf("%ld %d %s\n", get_time(p), p->philo_idx + 1, action_str);
+	// FIXME philo_idx
+	printf("%ld %d %s\n", get_time(p), p->philo_idx, action_str);
 
 	return (0);
 }
