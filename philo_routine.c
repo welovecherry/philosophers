@@ -71,6 +71,15 @@ int eating(t_philo *p)
 		return (p->am_i_dead);
 
 	print(p, EAT);
+	
+	// 5번째 인자가 널이 아닐때만 아래 코드 적용하기
+
+	// 내가 먹은횟수 플래그: 1 추가
+	// 만일 내가 먹은횟수 플래그 == 5번째 인자면 -> i_ate_all_flag을 1로 바꾸기
+		// 다른 철학자도 다 먹었는지 함수로 확인하기
+
+
+
 	p->t_begin_last_meal = get_time(p);
 	while (is_alive(p))
 	{
@@ -78,10 +87,10 @@ int eating(t_philo *p)
 			break;
 		usleep(100);
 	}
-	p->hold_l_fork = 0;
-	p->hold_r_fork = 0;
 	*(p->is_l_fork_occupied) = 0;
 	*(p->is_r_fork_occupied) = 0;
+	p->hold_l_fork = 0;
+	p->hold_r_fork = 0;
 	return (p->am_i_dead);
 }
 

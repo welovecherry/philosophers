@@ -4,10 +4,11 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-#define NUM_OF_PHILO 5
-#define TIME_DIE 2000
-#define TIME_EAT 400
-#define TIME_SLEEP 3000
+//#define NUM_OF_PHILO 5
+//#define TIME_DIE 2000
+//#define TIME_EAT 400
+//#define TIME_SLEEP 3000
+//#define NUM_OF_EACH_P_MUST_EAT 2
 
 typedef struct s_info
 {
@@ -15,25 +16,31 @@ typedef struct s_info
 	long			t_die;
 	long			t_eat;
 	long			t_sleep;
+	int				num_of_times_each_p_must_eat;
+	//int				*times_philos_ate;
 	long			t_begin_simul_from_70s;
 	pthread_mutex_t	*forks_lock;
 	pthread_mutex_t anyone_dead_lock;
 	int				*forks_occupied;
 	int				is_anyone_dead;
+	// 모두 먹었는지 나타내는 플래그
+	int				all_ate_they_should_eat;
 }	t_info;
 
 typedef struct s_philo
 {
-	t_info	*i;
-	int 	philo_idx;
-	long	t_begin_last_meal;
-	int		am_i_dead;
-	int		hold_l_fork;
-	int		hold_r_fork;
-	int 	*is_l_fork_occupied;
-	int 	*is_r_fork_occupied;
+	t_info			*i;
+	int 			philo_idx;
+	long			t_begin_last_meal;
+	int				am_i_dead;
+	int				hold_l_fork;
+	int				hold_r_fork;
+	int 			*is_l_fork_occupied;
+	int 			*is_r_fork_occupied;
 	pthread_mutex_t *l_fork_lock;
 	pthread_mutex_t *r_fork_lock;
+	int				times_i_ate;
+	int				i_ate_all_flag;
 }	t_philo;
 
 #define FORK 0
@@ -57,4 +64,5 @@ void	thread_control(t_philo **philos);
 int	take_left_fork(t_philo *p);
 int	take_right_fork(t_philo *p);
 
-t_philo **init_philo(void);
+t_philo **init_philo(char **av, t_info *info);
+t_info *init_shared_info(char **av);

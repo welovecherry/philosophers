@@ -21,6 +21,27 @@ int	is_alive(t_philo *p)
 	return (1);
 }
 
+// 내가 먹는횟수 플래그 만족했을 때, 다른 모든 철학자가 옵셔널 룰만큼 먹었는지 확인
+//int	all_ate_times_they_must_eat(t_philo *p)
+//{
+	// 와일로 돌면서 모든 철학자의 i_ate_all_flag가 1인지 확인하기.
+	// 아니면 리턴 0,
+	// 와일문 밖에서 리턴 1
+//}
+// 질문: 파라미터로 ** 들어와서 다른 필로를 다 확인해야하나?
+int	met_optional_rules(t_philo *p)
+{
+	int	idx;
+
+	idx = 0;
+	while (idx < p->i->num_of_philo)
+	{
+		if ()
+
+		idx++;
+	}
+}
+
 void	*philo(void *ptr)
 {
 	t_philo *p;

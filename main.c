@@ -18,16 +18,21 @@ void	free_all(t_philo **ps)
 	free(ps);
 }
 
-int main(void)
+int main(int ac, char **av)
 {
+	t_info	*info;
 	t_philo	**philos;
 	
-	philos = init_philo();
-
+	if (ac != 5 && ac != 6)
+	{
+		printf("invalid ac\n");
+		return (1);
+	}
+	info = init_shared_info(av);
+	philos = init_philo(av, info);
 	init_mutex(philos);
 	thread_control(philos);
 	destroy_mutex(philos);
-	
 	free_all(philos);
 	return (0);
 }
