@@ -17,21 +17,6 @@ void	init_forks(t_info *info)
 	}
 }
 
-void	init_times_philos_ate(t_info *info)
-{
-	int	idx;
-	info->times_philos_ate = (int *)malloc(sizeof(int) * (info->num_of_philo));
-	if (!(info->times_philos_ate))
-		exit (1);
-	
-	idx = 0;
-	while (idx < info->num_of_philo)
-	{
-		info->times_philos_ate[idx] = 0;
-		idx++;
-	}
-}
-
 t_info *init_shared_info(char **av)
 {
 	t_info *info;
@@ -46,7 +31,6 @@ t_info *init_shared_info(char **av)
 	if (av[5] != NULL)
 	{
 		info->num_of_times_each_p_must_eat = atoi(av[5]);
-		init_times_philos_ate(info); // 이때만 초기화해야할듯 
 		// TODO: free
 	}
 	else

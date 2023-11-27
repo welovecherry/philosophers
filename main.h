@@ -17,14 +17,11 @@ typedef struct s_info
 	long			t_eat;
 	long			t_sleep;
 	int				num_of_times_each_p_must_eat;
-	//int				*times_philos_ate;
 	long			t_begin_simul_from_70s;
 	pthread_mutex_t	*forks_lock;
 	pthread_mutex_t anyone_dead_lock;
 	int				*forks_occupied;
 	int				is_anyone_dead;
-	// 모두 먹었는지 나타내는 플래그
-	int				all_ate_they_should_eat;
 }	t_info;
 
 typedef struct s_philo
@@ -40,7 +37,6 @@ typedef struct s_philo
 	pthread_mutex_t *l_fork_lock;
 	pthread_mutex_t *r_fork_lock;
 	int				times_i_ate;
-	int				i_ate_all_flag;
 }	t_philo;
 
 #define FORK 0

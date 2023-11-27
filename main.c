@@ -1,5 +1,6 @@
 #include "main.h"
 
+// leak check
 void	free_all(t_philo **ps)
 {
 	int	idx;
@@ -18,11 +19,18 @@ void	free_all(t_philo **ps)
 	free(ps);
 }
 
+void c(void)
+{
+	system("leaks a.out");
+}
+
 int main(int ac, char **av)
 {
 	t_info	*info;
 	t_philo	**philos;
 	
+
+	atexit(c);
 	if (ac != 5 && ac != 6)
 	{
 		printf("invalid ac\n");
