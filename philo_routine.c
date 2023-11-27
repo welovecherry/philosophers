@@ -4,13 +4,15 @@ int	take_left_fork(t_philo *p)
 {
 	if (!is_alive(p))
 		return (p->am_i_dead);
-	p->is_l_fork_occupied = &(p->i->forks_occupied[p->philo_idx]);
+	//p->is_l_fork_occupied = &(p->i->forks_occupied[p->philo_idx]);
 	p->l_fork_lock = &(p->i->forks_lock[p->philo_idx]);
 	while (1)
 	{
 		if (p->hold_l_fork == 1)
 			break ;
 		pthread_mutex_lock(p->l_fork_lock);
+		// FIXME
+		p->is_l_fork_occupied = &(p->i->forks_occupied[p->philo_idx]);
 		if (*(p->is_l_fork_occupied) == 0)
 		{
 			print(p, FORK);
@@ -80,14 +82,21 @@ int eating(t_philo *p)
 	}
 	if (p->i->num_of_times_each_p_must_eat)
 	{
-		p->times_i_ate ++;
+		p->times_i_ate++;
 		if (p->times_i_ate == p->i->num_of_times_each_p_must_eat)
 		{
 			p->am_i_dead = 1;
 		}
 	}
+	// FIXME
+	pthread_mutex_lock(p->l_fork_lock);
 	*(p->is_l_fork_occupied) = 0;
+	pthread_mutex_unlock(p->l_fork_lock);
+	
+	pthread_mutex_lock(p->r_fork_lock);
 	*(p->is_r_fork_occupied) = 0;
+	pthread_mutex_unlock(p->r_fork_lock);
+	
 	p->hold_l_fork = 0;
 	p->hold_r_fork = 0;
 	return (p->am_i_dead);

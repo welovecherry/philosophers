@@ -4,12 +4,6 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-//#define NUM_OF_PHILO 5
-//#define TIME_DIE 2000
-//#define TIME_EAT 400
-//#define TIME_SLEEP 3000
-//#define NUM_OF_EACH_P_MUST_EAT 2
-
 typedef struct s_info
 {
 	int				num_of_philo;
@@ -60,5 +54,5 @@ void	thread_control(t_philo **philos);
 int	take_left_fork(t_philo *p);
 int	take_right_fork(t_philo *p);
 
-t_philo **init_philo(char **av, t_info *info);
+t_philo **init_philo(t_info *info);
 t_info *init_shared_info(char **av);

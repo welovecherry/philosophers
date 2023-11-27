@@ -22,8 +22,6 @@ int print(t_philo *p, int action)
 		return (0);
 	}
 	pthread_mutex_unlock(&(p->i->anyone_dead_lock));
-	// FIXME philo_idx
-	printf("%ld %d %s\n", get_time(p), p->philo_idx, action_str);
-
+	printf("%ld %d %s\n", get_time(p), p->philo_idx + 1, action_str);
 	return (0);
 }

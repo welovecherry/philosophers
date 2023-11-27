@@ -53,28 +53,28 @@ void	thread_control(t_philo **philos)
 	pthread_t	*philo_ths;
 
 	philo_ths = (pthread_t *)malloc(sizeof(pthread_t) * philos[0]->i->num_of_philo);
+	if (!philo_ths)
+		exit (1);
 	idx = 0;
 	philos[0]->i->t_begin_simul_from_70s = get_t_begin_simul();
 	while (idx < philos[0]->i->num_of_philo)
 	{
 		pthread_create(&(philo_ths[idx]), NULL, philo, philos[idx]);
-		usleep(30);
+		usleep(50);
 		idx += 2;
 	}
 	idx = 1;
 	while (idx < philos[0]->i->num_of_philo)
 	{
 		pthread_create(&(philo_ths[idx]), NULL, philo, philos[idx]);
-		usleep(30);
+		usleep(50);
 		idx += 2;
 	}
-
 	idx = 0;
 	while (idx < philos[0]->i->num_of_philo)
 	{
 		pthread_join(philo_ths[idx], NULL);
 		idx++;
 	}
-
 	free(philo_ths);
 }

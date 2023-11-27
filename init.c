@@ -29,10 +29,7 @@ t_info *init_shared_info(char **av)
 	info->t_eat = atoi(av[3]);
 	info->t_sleep = atoi(av[4]);
 	if (av[5] != NULL)
-	{
 		info->num_of_times_each_p_must_eat = atoi(av[5]);
-		// TODO: free
-	}
 	else
 		info->num_of_times_each_p_must_eat = 0;
 	info->is_anyone_dead = 0;
@@ -40,7 +37,7 @@ t_info *init_shared_info(char **av)
 }
 
 
-t_philo **init_philo(char **av, t_info *info)
+t_philo **init_philo(t_info *info)
 {
 	t_philo	**philos;
 	int		idx;

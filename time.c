@@ -7,7 +7,7 @@ long get_time(t_philo *p)
 
 	gettimeofday(&tv, NULL);
 	cur_time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-	return (cur_time - p->i->t_begin_simul_from_70s);
+	return (cur_time - (p->i->t_begin_simul_from_70s));
 }
 
 long get_t_begin_simul()
