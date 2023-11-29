@@ -1,31 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   philo_sleep_and_think.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jungmiho <jungmiho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 16:32:02 by jungmiho          #+#    #+#             */
-/*   Updated: 2023/11/29 16:32:24 by jungmiho         ###   ########.fr       */
+/*   Created: 2023/11/29 16:31:45 by jungmiho          #+#    #+#             */
+/*   Updated: 2023/11/29 17:37:02 by jungmiho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-long	get_time(t_philo *p)
+int	sleeping(t_philo *p)
 {
-	struct timeval	tv;
-	long			cur_time;
+	long	t_begin_sleep;
 
-	gettimeofday(&tv, NULL);
-	cur_time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-	return (cur_time - (p->i->t_begin_simul_from_70s));
+	if (!is_alive(p))
+		return (p->am_i_dead);
+	print(p, SLEEP);
+	t_begin_sleep = get_time(p);
+	while (is_alive(p))
+	{
+		if (get_time(p) - t_begin_sleep >= p->i->t_sleep)
+			break ;
+		usleep(100);
+	}
+	return (p->am_i_dead);
 }
 
-long	get_t_begin_simul(void)
+int	thinking(t_philo *p)
 {
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	if (!is_alive(p))
+		return (p->am_i_dead);
+	print(p, THINK);
+	return (p->am_i_dead);
 }

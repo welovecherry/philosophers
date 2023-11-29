@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jungmiho <jungmiho@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/29 16:24:59 by jungmiho          #+#    #+#             */
+/*   Updated: 2023/11/29 17:22:22 by jungmiho         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "main.h"
 
-char *pass_whitespace_reach_str_num(char *str, int *sign)
+char	*pass_whitespace_reach_str_num(char *str, int *sign)
 {
 	while ((9 <= *str && *str <= 13) || (*str == 32))
 		str++;
@@ -14,7 +26,7 @@ char *pass_whitespace_reach_str_num(char *str, int *sign)
 	return (str);
 }
 
-int ft_atoi(char *str)
+int	ft_atoi(char *str)
 {
 	char		*str_num;
 	long long	result;

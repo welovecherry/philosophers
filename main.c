@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jungmiho <jungmiho@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/29 16:24:48 by jungmiho          #+#    #+#             */
+/*   Updated: 2023/11/29 21:10:00 by jungmiho         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "main.h"
 
 void	free_all(t_philo **philos, t_info *info)
@@ -28,24 +40,34 @@ void	free_all(t_philo **philos, t_info *info)
 
 void c(void) // deletttttteeeeee
 {
-	system("leaks a.out");
+	system("leaks philo");
 }
 
 int main(int ac, char **av)
 {
-	t_info	*info;
-	t_philo	**philos;
+	t_info *info;
+	t_philo **philos;
 	
-	atexit(c);
+	//atexit(c);
 
 	if (ac != 5 && ac != 6)
-	{
 		return (1);
-	}
 	info = init_shared_info(av);
+	if (!info)
+		return (0);
 	philos = init_philo(info);
+	if (!philos)
+	{
+		free(info);
+		return (0);
+	}
 	init_mutex(philos);
-	thread_control(philos);
+	if (thread_control(philos) == -1)
+	{
+		destroy_mutex(philos);
+		free_all(philos, info);
+		return (0);
+	}
 	destroy_mutex(philos);
 	free_all(philos, info);
 	return (0);
