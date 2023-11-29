@@ -47,12 +47,25 @@ void	*philo(void *ptr)
 	return (NULL);
 }
 
+//void	thread_join(t_philo **philos)
+//{
+//	int	idx;
+
+//	idx = 0;
+//	while (idx < philos[0]->i->num_of_philo)
+//	{
+
+
+//		idx
+//	}
+//}
+
 void	thread_control(t_philo **philos)
 {
 	int			idx;
 	pthread_t	*philo_ths;
 
-	philo_ths = (pthread_t *)malloc(sizeof(pthread_t) * philos[0]->i->num_of_philo);
+	philo_ths = malloc(sizeof(pthread_t) * philos[0]->i->num_of_philo);
 	if (!philo_ths)
 		exit (1);
 	idx = 0;
@@ -72,9 +85,6 @@ void	thread_control(t_philo **philos)
 	}
 	idx = 0;
 	while (idx < philos[0]->i->num_of_philo)
-	{
-		pthread_join(philo_ths[idx], NULL);
-		idx++;
-	}
+		pthread_join(philo_ths[idx++], NULL);
 	free(philo_ths);
 }

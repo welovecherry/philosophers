@@ -1,5 +1,18 @@
 #include "main.h"
 
+int	check_num(char *str, int n)
+{
+	int	num_av;
+
+	num_av = ft_atoi(str);
+	if (num_av < n)
+	{
+		printf("invalid av!\n");
+		exit(1);
+	}
+	return (num_av);
+}
+
 t_shared *init_shared_info(char **av)
 {
 	t_shared	*shared;
@@ -7,18 +20,10 @@ t_shared *init_shared_info(char **av)
 	shared = (t_shared *)malloc(sizeof(t_shared) * 1);
 	if (!shared)
 		exit(1);
-	shared->num_of_philo = ft_atoi(av[1]);
-	if (shared->num_of_philo == -1)
-	{
-		free(shared);
-		exit (1);
-	}
-	shared->t_die = ft_atoi(av[2]);
-	// die 도 음수 안되네!!!
-	shared->t_eat = ft_atoi(av[3]);
-	//
-	shared->t_sleep = ft_atoi(av[4]);
-	//
+	shared->num_of_philo = check_num(av[1], 1);
+	shared->t_die = check_num(av[2], 0);
+	shared->t_eat = check_num(av[3], 0);
+	shared->t_sleep = check_num(av[4], 0);
 	if (av[5] != NULL)
 		shared->t_each_philo_must_eat = ft_atoi(av[5]);
 	else
@@ -26,12 +31,29 @@ t_shared *init_shared_info(char **av)
 	shared->is_anyone_dead = 0;
 	return(shared);
 }
+// TODO: free
+void	init_forks(t_shared *shared)
+{
+	int	idx;
+
+	shared->forks_occupied = (int *)malloc(sizeof(int) * shared->num_of_philo);
+	if (!shared->forks_occupied)
+		exit (1);
+	idx = 0;
+	while (idx < shared->num_of_philo)
+	{
+		shared->forks_occupied[idx] = 0;
+		idx++;
+	}
+}
+
 
 t_philo **init_philo(t_shared *shared)
 {
 	t_philo **philos;
 	int	idx;
 
+	init_forks(shared);
 	philos = (t_philo **)malloc(sizeof(t_philo *) * shared->num_of_philo);
 	if (!philos)
 		exit (1);

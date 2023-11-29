@@ -13,7 +13,6 @@
 # define THINK 3
 # define DIED 4
 
-
 typedef	struct s_shared
 {
 	int				num_of_philo;
@@ -43,8 +42,19 @@ typedef struct s_philo
 	int				times_i_ate;
 }	t_philo;
 
-#endif
 
-t_shared *init_shared_info(char **av);
-int	ft_atoi(const char *str);
-t_philo **init_philo(t_shared *shared);
+int			ft_atoi(const char *str);
+t_shared	*init_shared_info(char **av);
+t_philo		**init_philo(t_shared *shared);
+void		init_mutex(t_philo **philos);
+void 		destroy_mutex(t_philo **philos);
+long		get_time(t_philo *p);
+long		get_t_begin_simul(void);
+void		thread_control(t_philo **philos);
+void		*philo_control(void *ptr);
+int			is_alive(t_philo *p);
+void		print_routine(t_philo *p, int action);
+
+
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef MAIN_H
+# define MAIN_H
+
 #include <stdio.h>
 #include <sys/time.h>
 #include <unistd.h>
@@ -39,20 +42,22 @@ typedef struct s_philo
 #define THINK 3
 #define DIED 4
 
-long get_time(t_philo *p);
-long get_t_begin_simul();
-int take_two_forks(t_philo *p);
-int eating(t_philo *p);
-int sleeping(t_philo *p);
-int thinking(t_philo *p);
-int print(t_philo *p, int action);
-int is_alive(t_philo *p);
-void *philo(void *ptr);
+long	get_time(t_philo *p);
+long	get_t_begin_simul();
+int		take_two_forks(t_philo *p);
+int		eating(t_philo *p);
+int		sleeping(t_philo *p);
+int		thinking(t_philo *p);
+void	print(t_philo *p, int action);
+int		is_alive(t_philo *p);
+void	*philo(void *ptr);
 void	init_mutex(t_philo **philos);
 void	destroy_mutex(t_philo **philos);
 void	thread_control(t_philo **philos);
-int	take_left_fork(t_philo *p);
-int	take_right_fork(t_philo *p);
+int		take_left_fork(t_philo *p);
+int		take_right_fork(t_philo *p);
+t_philo	**init_philo(t_info *info);
+t_info	*init_shared_info(char **av);
+int		ft_atoi(char *str);
 
-t_philo **init_philo(t_info *info);
-t_info *init_shared_info(char **av);
+#endif

@@ -14,17 +14,17 @@ char *pass_whitespace_reach_str_num(char *str, int *sign)
 	return (str);
 }
 
-int ft_atoi(const char *str)
+int ft_atoi(char *str)
 {
-	char *str_num;
-	long long result;
-	long long prev_result;
-	int sign;
+	char		*str_num;
+	long long	result;
+	long long	prev_result;
+	int			sign;
 
 	str_num = pass_whitespace_reach_str_num((char *)str, &sign);
 	if (str_num == NULL)
 		return (-1);
-	5 result = 0;
+	result = 0;
 	prev_result = result;
 	while ('0' <= *str_num && *str_num <= '9')
 	{
@@ -40,7 +40,5 @@ int ft_atoi(const char *str)
 		prev_result = result;
 	}
 	result *= sign;
-	if (result < 1)
-		return (-1);
 	return ((int)result);
 }

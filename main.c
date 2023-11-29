@@ -26,7 +26,7 @@ void	free_all(t_philo **philos, t_info *info)
 	free(info);
 }
 
-void c(void)
+void c(void) // deletttttteeeeee
 {
 	system("leaks a.out");
 }
@@ -40,7 +40,6 @@ int main(int ac, char **av)
 
 	if (ac != 5 && ac != 6)
 	{
-		printf("invalid ac\n");
 		return (1);
 	}
 	info = init_shared_info(av);
