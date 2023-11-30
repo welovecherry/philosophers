@@ -24,7 +24,7 @@ int	sleeping(t_philo *p)
 	{
 		if (get_time(p) - t_begin_sleep >= p->i->t_sleep)
 			break ;
-		usleep(100);
+		usleep(2000);
 	}
 	return (p->am_i_dead);
 }

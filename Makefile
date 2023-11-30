@@ -15,7 +15,10 @@ NAME = philo
 CC = cc
 
 CFLAGS = -Wall -Wextra -Werror 
-# CFLAGS += -fsanitize=thread
+
+ifdef SANITIZE
+CFLAGS += -fsanitize=thread
+endif
 
 SRCS = ft_atoi.c main.c mutex.c philo_fork_and_eat.c \
 philo_thread.c print.c time.c init.c philo_sleep_and_think.c

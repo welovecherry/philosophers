@@ -84,7 +84,7 @@ int	eating(t_philo *p)
 	{
 		if (get_time(p) - (p->t_begin_last_meal) >= (p->i->t_eat))
 			break ;
-		usleep(100);
+		usleep(2000);
 	}
 	if (p->i->num_of_times_each_p_must_eat)
 	{
