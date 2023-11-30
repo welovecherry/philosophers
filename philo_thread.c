@@ -75,14 +75,14 @@ int	thread_control(t_philo **philos)
 	while (idx < philos[0]->i->num_of_philo)
 	{
 		pthread_create(&(philo_ths[idx]), NULL, philo, philos[idx]);
-		usleep(50);
+		usleep(1);
 		idx += 2;
 	}
 	idx = 1;
 	while (idx < philos[0]->i->num_of_philo)
 	{
 		pthread_create(&(philo_ths[idx]), NULL, philo, philos[idx]);
-		usleep(50);
+		usleep(1);
 		idx += 2;
 	}
 	idx = 0;

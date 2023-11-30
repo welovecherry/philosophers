@@ -19,6 +19,7 @@ int	check_num(char *str, int min_allowed_value)
 	num_av = ft_atoi(str);
 	if (num_av < min_allowed_value)
 	{
+		//printf("%c %d \n",*str, num_av);
 		return (-1);
 	}
 	return (num_av);
@@ -60,6 +61,7 @@ t_info	*init_shared_info(char **av)
 		return NULL;
 	}
 	info->is_anyone_dead = 0;
+	info->is_died_printed = 0;
 	return (info);
 }
 

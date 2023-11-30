@@ -32,6 +32,8 @@ typedef struct s_info
 	pthread_mutex_t	print_lock;
 	int				*forks_occupied;
 	int				is_anyone_dead;
+	int				is_died_printed;
+	int				is_anyone_dead_printed;
 }	t_info;
 
 typedef struct s_philo

@@ -40,12 +40,12 @@ void	print(t_philo *p, int action)
 
 	action_str = choose_action_str(action);
 	pthread_mutex_lock(&(p->i->print_lock));
-	
-	// TODO: died print ㅇㅣ후에는 하하지지마마라라
-	if (p->am_i_dead)
-		
-
-	if (1)
+	if (action == DIED && p->i->is_died_printed == 0)
+	{
+		printf("%ld %d %s\n", get_time(p), p->philo_idx + 1, action_str);
+		p->i->is_died_printed = 1;
+	}
+	else if (p->i->is_died_printed == 0)
 		printf("%ld %d %s\n", get_time(p), p->philo_idx + 1, action_str);
 	pthread_mutex_unlock(&(p->i->print_lock));
 }
