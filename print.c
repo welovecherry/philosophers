@@ -6,7 +6,7 @@
 /*   By: jungmiho <jungmiho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:31:53 by jungmiho          #+#    #+#             */
-/*   Updated: 2023/11/29 22:08:12 by jungmiho         ###   ########.fr       */
+/*   Updated: 2023/12/02 11:33:15 by jungmiho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,9 @@ char	*choose_action_str(int action)
 	else if (action == DIED)
 		action_str = "died";
 	else
-		action_str = "UNKNOWN"; // how can i delete this line?
+		action_str = "UNKNOWN";
 	return (action_str);
 }
-
-// TODO: ./philo 100 410 200 200 했을 때 죽었다고 출력 여러번 됨
-// TODO: 한 철학자가 죽었는데도 다른 철학자의 로그 출력됨
 
 void	print(t_philo *p, int action)
 {

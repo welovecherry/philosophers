@@ -6,7 +6,7 @@
 /*   By: jungmiho <jungmiho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:24:48 by jungmiho          #+#    #+#             */
-/*   Updated: 2023/11/29 21:10:00 by jungmiho         ###   ########.fr       */
+/*   Updated: 2023/12/02 19:18:05 by jungmiho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,10 @@ void	free_all(t_philo **philos, t_info *info)
 	free(info);
 }
 
-void c(void) // deletttttteeeeee
+int	main(int ac, char **av)
 {
-	system("leaks philo");
-}
-
-int main(int ac, char **av)
-{
-	t_info *info;
-	t_philo **philos;
-	
-	//atexit(c);
+	t_info	*info;
+	t_philo	**philos;
 
 	if (ac != 5 && ac != 6)
 		return (1);

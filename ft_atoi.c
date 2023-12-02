@@ -6,7 +6,7 @@
 /*   By: jungmiho <jungmiho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:24:59 by jungmiho          #+#    #+#             */
-/*   Updated: 2023/11/29 17:22:22 by jungmiho         ###   ########.fr       */
+/*   Updated: 2023/12/02 11:29:27 by jungmiho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,70 +26,27 @@ char	*pass_whitespace_reach_str_num(char *str, int *sign)
 	return (str);
 }
 
-// TODO: only numbers not character
-//int	ft_atoi(char *str)
-//{
-//	char		*str_num;
-//	long long	result;
-//	long long	prev_result;
-//	int			sign;
-
-//	str_num = pass_whitespace_reach_str_num((char *)str, &sign);
-//	if (str_num == NULL)
-//		return (-1);
-//	result = 0;
-//	prev_result = result;
-//	while ('0' <= *str_num && *str_num <= '9')
-//	{
-//		result = (result * 10) + (*str_num - '0');
-//		if (result / 10 != prev_result)
-//		{
-//			return (-1);
-//			//if (sign == 1)
-//			//	return (-1);
-//			//if (sign == -1)
-//			//	return (0);
-//		}
-//		str_num++;
-//		prev_result = result;
-//	}
-//	result *= sign;
-//	return ((int)result);
-//}
-
-int	is_digit(char ch)
-{
-	if ('0' <= ch && ch <= '9')
-		return (1);
-	return (0);
-}
-
-
 int	ft_atoi(char *str)
 {
 	char		*str_num;
 	long long	result;
-	long long	prev_result;
 	int			sign;
+	int			len;
 
 	str_num = pass_whitespace_reach_str_num((char *)str, &sign);
-	if (str_num == NULL)
+	if (sign == -1)
 		return (-1);
 	result = 0;
-	prev_result = result;
+	len = 0;
 	while ('0' <= *str_num && *str_num <= '9')
 	{
 		result = (result * 10) + (*str_num - '0');
-		if (result / 10 != prev_result)
-		{
-			if (sign == 1)
-				return (-1);
-			if (sign == -1)
-				return (0);
-		}
 		str_num++;
-		prev_result = result;
+		len++;
 	}
-	result *= sign;
+	if (len == 0 || *str_num != '\0')
+		return (-1);
+	if (len > 11 || result > 2147483647)
+		return (-1);
 	return ((int)result);
 }

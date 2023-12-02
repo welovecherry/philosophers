@@ -6,7 +6,7 @@
 /*   By: jungmiho <jungmiho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:25:04 by jungmiho          #+#    #+#             */
-/*   Updated: 2023/11/29 19:56:35 by jungmiho         ###   ########.fr       */
+/*   Updated: 2023/12/02 11:32:54 by jungmiho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	check_num(char *str, int min_allowed_value)
 	num_av = ft_atoi(str);
 	if (num_av < min_allowed_value)
 	{
-		//printf("%c %d \n",*str, num_av);
 		return (-1);
 	}
 	return (num_av);
@@ -31,11 +30,10 @@ int	set_shared_info_args(t_info *info, char **av)
 	info->t_die = check_num(av[2], 0);
 	info->t_eat = check_num(av[3], 0);
 	info->t_sleep = check_num(av[4], 0);
-
 	if (info->num_of_philo == -1 || info->t_die == -1 || \
 		info->t_eat == -1 || info->t_sleep == -1)
 		return (-1);
-	if (av[5] != NULL) 
+	if (av[5] != NULL)
 	{
 		info->num_of_times_each_p_must_eat = check_num(av[5], 0);
 		if (info->num_of_times_each_p_must_eat == -1)
@@ -51,14 +49,14 @@ int	set_shared_info_args(t_info *info, char **av)
 t_info	*init_shared_info(char **av)
 {
 	t_info	*info;
-	
+
 	info = malloc(sizeof(t_info));
 	if (!info)
-		return NULL;
+		return (NULL);
 	if (set_shared_info_args(info, av) == -1)
 	{
 		free(info);
-		return NULL;
+		return (NULL);
 	}
 	info->is_anyone_dead = 0;
 	info->is_died_printed = 0;

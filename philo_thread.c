@@ -6,7 +6,7 @@
 /*   By: jungmiho <jungmiho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:31:49 by jungmiho          #+#    #+#             */
-/*   Updated: 2023/11/29 22:04:59 by jungmiho         ###   ########.fr       */
+/*   Updated: 2023/12/02 19:54:19 by jungmiho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,21 @@ void	*philo(void *ptr)
 				return (NULL);
 		}
 		else
-			continue;
+			continue ;
 	}
 	return (NULL);
+}
+
+void	join_threads(t_philo **philos, pthread_t *philo_ths)
+{
+	int	idx;
+
+	idx = 0;
+	while (idx < philos[0]->i->num_of_philo)
+	{
+		pthread_join(philo_ths[idx], NULL);
+		idx++;
+	}
 }
 
 int	thread_control(t_philo **philos)
@@ -69,25 +81,24 @@ int	thread_control(t_philo **philos)
 
 	philo_ths = malloc(sizeof(pthread_t) * philos[0]->i->num_of_philo);
 	if (!philo_ths)
-		return(-1);
+		return (-1);
 	idx = 0;
 	philos[0]->i->t_begin_simul_from_70s = get_t_begin_simul();
 	while (idx < philos[0]->i->num_of_philo)
 	{
 		pthread_create(&(philo_ths[idx]), NULL, philo, philos[idx]);
-		usleep(10);
+		usleep(1);
 		idx += 2;
 	}
+	usleep(10);
 	idx = 1;
 	while (idx < philos[0]->i->num_of_philo)
 	{
 		pthread_create(&(philo_ths[idx]), NULL, philo, philos[idx]);
-		usleep(10);
+		usleep(1);
 		idx += 2;
 	}
-	idx = 0;
-	while (idx < philos[0]->i->num_of_philo)
-		pthread_join(philo_ths[idx++], NULL);
+	join_threads(philos, philo_ths);
 	free(philo_ths);
 	return (0);
 }

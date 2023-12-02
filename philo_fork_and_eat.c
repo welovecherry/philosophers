@@ -6,7 +6,7 @@
 /*   By: jungmiho <jungmiho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:24:24 by jungmiho          #+#    #+#             */
-/*   Updated: 2023/11/29 21:56:42 by jungmiho         ###   ########.fr       */
+/*   Updated: 2023/12/02 19:18:15 by jungmiho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	take_left_fork(t_philo *p)
 	{
 		*(p->is_l_fork_occupied) = 1;
 		p->hold_l_fork = 1;
-		print(p, FORK);	
+		print(p, FORK);
 	}
 	pthread_mutex_unlock(p->l_fork_lock);
 	return (p->am_i_dead);
@@ -70,7 +70,7 @@ int	take_two_forks(t_philo *p)
 		return (p->am_i_dead);
 	if (take_right_fork(p))
 		return (p->am_i_dead);
-	p->both_taken = p->hold_l_fork && p->hold_r_fork;
+	p->both_taken = (p->hold_l_fork && p->hold_r_fork);
 	return (p->am_i_dead);
 }
 
