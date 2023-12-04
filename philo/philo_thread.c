@@ -6,7 +6,7 @@
 /*   By: jungmiho <jungmiho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:31:49 by jungmiho          #+#    #+#             */
-/*   Updated: 2023/12/04 15:37:56 by jungmiho         ###   ########.fr       */
+/*   Updated: 2023/12/04 20:21:28 by jungmiho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ void	*philo(void *ptr)
 			if (thinking(p))
 				return (NULL);
 		}
-		else
-			continue ;
 	}
 	return (NULL);
 }
