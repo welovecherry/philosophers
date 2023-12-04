@@ -6,7 +6,7 @@
 /*   By: jungmiho <jungmiho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:31:45 by jungmiho          #+#    #+#             */
-/*   Updated: 2023/11/29 17:37:02 by jungmiho         ###   ########.fr       */
+/*   Updated: 2023/12/04 21:51:38 by jungmiho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	sleeping(t_philo *p)
 	{
 		if (get_time(p) - t_begin_sleep >= p->i->t_sleep)
 			break ;
-		usleep(2000);
+		usleep(1000);
 	}
 	return (p->am_i_dead);
 }

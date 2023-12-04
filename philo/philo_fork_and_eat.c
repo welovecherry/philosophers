@@ -6,7 +6,7 @@
 /*   By: jungmiho <jungmiho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 17:24:24 by jungmiho          #+#    #+#             */
-/*   Updated: 2023/12/04 18:23:37 by jungmiho         ###   ########.fr       */
+/*   Updated: 2023/12/04 21:50:32 by jungmiho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	eating(t_philo *p)
 	{
 		if (get_time(p) - (p->t_begin_last_meal) >= (p->i->t_eat))
 			break ;
-		usleep(200);
+		usleep(150);
 	}
 	if (p->i->num_of_times_each_p_must_eat)
 	{
