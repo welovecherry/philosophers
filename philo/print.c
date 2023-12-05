@@ -6,7 +6,7 @@
 /*   By: jungmiho <jungmiho@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 16:31:53 by jungmiho          #+#    #+#             */
-/*   Updated: 2023/12/04 20:40:18 by jungmiho         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:34:19 by jungmiho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ void	print(t_philo *p, int action)
 {
 	char	*action_str;
 
+	action_str = choose_action_str(action);
 	pthread_mutex_lock(&(p->i->print_lock));
 	if (p->i->is_died_printed == 0)
 	{
-		action_str = choose_action_str(action);
 		printf("%ld %d %s\n", get_time(p), p->philo_idx + 1, action_str);
 		if (action == DIED)
 		{
